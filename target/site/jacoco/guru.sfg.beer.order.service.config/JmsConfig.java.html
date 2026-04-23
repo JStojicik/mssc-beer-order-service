@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JmsConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mssc-beer-order-service</a> &gt; <a href="index.source.html" class="el_package">guru.sfg.beer.order.service.config</a> &gt; <span class="el_source">JmsConfig.java</span></div><h1>JmsConfig.java</h1><pre class="source lang-java linenums">package guru.sfg.beer.order.service.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import guru.sfg.beer.order.service.messaging.model.JmsMessage;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
+@Configuration
+<span class="fc" id="L17">public class JmsConfig {</span>
+    public static final String VALIDATE_ORDER_QUEUE = &quot;validate-order&quot;;
+    public static final String VALIDATE_ORDER_RESPONSE_QUEUE = &quot;validate-order-response&quot;;
+    public static final String ALLOCATE_ORDER_QUEUE = &quot;allocate-order&quot;;
+    public static final String ALLOCATE_ORDER_RESPONSE_QUEUE = &quot;allocate-order-response&quot;;
+    public static final String ALLOCATE_FAILURE_QUEUE = &quot;allocation-failure&quot;;
+    public static final String DEALLOCATE_ORDER_QUEUE = &quot;deallocate-order&quot;;
+
+
+    @Bean
+    public MessageConverter messageConverter() {
+<span class="fc" id="L28">        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();</span>
+<span class="fc" id="L29">        converter.setTargetType(MessageType.TEXT);</span>
+<span class="fc" id="L30">        converter.setTypeIdPropertyName(&quot;_type&quot;);</span>
+<span class="fc" id="L31">        return converter;</span>
+    }
+
+//    @Bean
+//    public MessageConverter messageConverter(ObjectMapper objectMapper) {
+//        return new MessageConverter() {
+//
+//            @Override
+//            public Message toMessage(Object object, Session session) throws JMSException {
+//                String json;
+//                try {
+//                    json = objectMapper.writeValueAsString(object);
+//                } catch (Exception e) {
+//                    throw new RuntimeException(&quot;Error converting object to JSON&quot;, e);
+//                }
+//                return session.createTextMessage(json);
+//            }
+//
+//            @Override
+//            public Object fromMessage(Message message) throws JMSException {
+//                if (message instanceof TextMessage) {
+//                    TextMessage textMessage = (TextMessage) message;
+//                    String json = textMessage.getText();
+//                    try {
+//                        return objectMapper.readValue(json, JmsMessage.class);
+//                    } catch (Exception e) {
+//                        throw new RuntimeException(&quot;Error converting JSON to object&quot;, e);
+//                    }
+//                }
+//                throw new IllegalArgumentException(&quot;Message must be TextMessage&quot;);
+//            }
+//        };
+//    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

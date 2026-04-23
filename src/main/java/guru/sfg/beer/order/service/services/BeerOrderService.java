@@ -18,8 +18,12 @@
 package guru.sfg.beer.order.service.services;
 
 
-import guru.sfg.beer.order.service.web.model.BeerOrderDto;
-import guru.sfg.beer.order.service.web.model.BeerOrderPagedList;
+import com.brewery.model.BeerOrderDto;
+import com.brewery.model.BeerOrderPagedList;
+import guru.sfg.beer.order.service.web.validations.IsCustomerExists;
+import guru.sfg.beer.order.service.web.validations.IsOrderAllocated;
+import guru.sfg.beer.order.service.web.validations.IsOrderBelongsToCustomer;
+import guru.sfg.beer.order.service.web.validations.IsOrderExists;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
@@ -30,6 +34,6 @@ public interface BeerOrderService {
     BeerOrderDto placeOrder(UUID customerId, BeerOrderDto beerOrderDto);
 
     BeerOrderDto getOrderById(UUID customerId, UUID orderId);
-
-    void pickupOrder(UUID customerId, UUID orderId);
+    @IsOrderBelongsToCustomer
+    void pickupOrder(@IsCustomerExists UUID customerId, @IsOrderExists @IsOrderAllocated UUID orderId);
 }
